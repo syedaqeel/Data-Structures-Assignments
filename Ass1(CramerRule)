@@ -1,0 +1,494 @@
+// day1(cramerrule).cpp : Defines the entry point for the console application.
+//
+
+
+#include "stdafx.h"
+#include<iostream>
+#include<math.h>
+using namespace std;
+class Cramer
+{
+private: int **C;
+		 int row;
+		 int column;
+
+
+public: Cramer();
+		Cramer(int a, int b);
+		void init(int a, int b);
+		void input();
+		int determinant();
+		void CramerRule();
+		void transpose();
+		void multiplyindex(int a, int b, int c);
+		void Multiply(int a);
+		void add(int a);
+		void addindex(int a, int b, int c);
+		void minus(int a);
+		void minusindex(int a, int b, int c);
+		void swap();
+		void Ainverse();
+		Cramer adjoint();
+		void display();
+
+};
+
+void Cramer::Ainverse()
+{
+	int d = 0;
+	d = determinant();
+	d = 1 / d;
+	std::cout << d << endl;
+	Cramer result, temp;
+	temp = adjoint();
+
+	
+	//temp.display();
+	for (int i = 0; i < row; i++)
+	{
+		for (int j = 0; j < column; j++)
+		{
+			C[i][j] = temp.C[i][j];
+		}
+	}
+	//display();
+	
+
+	for (int i = 0; i < row; i++)
+	{
+		for (int j = 0; j < column; j++)
+		{
+			C[i][j] =d*C[i][j];
+		}
+	}
+	display();
+}
+
+Cramer::Cramer()
+{
+	     row = 3;
+	     column = 3;
+	     init(row , column);
+}
+Cramer::Cramer(int a, int b)
+{
+	     row = a;
+	     column = b;
+	     init( row,  column);
+}
+void Cramer::init(int a, int b)
+{
+	C = new int *[row];
+	for (int i = 0; i< row; i++)
+	{
+		C[i] = new int[column];
+	}
+}
+void Cramer::input()
+{
+	for (int i = 0; i<row; i++)
+	{
+		for (int j = 0; j<column; j++)
+		{
+			std::cout << "Enter the value at index [" << i << "][" << j << "] =";
+			std::cin >> C[i][j];
+		}
+	}
+}
+int Cramer::determinant()
+{
+	int x, y, z = 0;
+	x =      C[1][1] *      C[2][2] -      C[1][2] *      C[2][1];
+	x =      C[0][0] * x;
+
+	y =      C[1][0] *      C[2][2] -      C[1][2] *      C[2][0];
+	y =      C[0][1] * y;
+
+	z =      C[1][0] *      C[2][1] -      C[1][1] *      C[2][0];
+	z =      C[0][2] * z;
+
+	int k = 0;
+	k = x - y + z;
+	std::cout << k;
+
+	return k;
+}
+void Cramer::multiplyindex(int a, int b, int c)
+{
+	std::cout <<      C[a][b] * c << endl;
+}
+void Cramer::Multiply(int a)
+{
+	for (int i = 0; i<row; i++)
+	{
+		for (int j = 0; j<column; j++)
+		{
+			std::cout <<C[i][j] * a << " ";
+		}
+		std::cout << endl;
+	}
+}
+void Cramer::addindex(int a, int b, int c)
+{
+	std::cout <<      C[a][b] + c << endl;
+}
+void Cramer::add(int a)
+{
+	for (int i = 0; i<row; i++)
+	{
+		for (int j = 0; j<column; j++)
+		{
+			std::cout<< C[i][j] + a << " ";
+		}
+		std::cout << endl;
+	}
+}
+void Cramer::minusindex(int a, int b, int c)
+{
+	std::cout <<      C[a][b] - c << endl;
+}
+void Cramer::minus(int a)
+{
+	for (int i = 0; i<row; i++)
+	{
+		for (int j = 0; j<column; j++)
+		{
+			std::cout << C[i][j] - a << " ";
+		}
+		std::cout << endl;
+	}
+}
+void Cramer::CramerRule()
+{
+	int *a;
+	a = new int[row];
+	for (int i = 0; i<row; i++)
+	{
+
+		for (int j = 0; j<column; j++)
+		{
+			if (j != 2)
+			{
+				if (j == 0)
+				{
+					std::cout << C[i][j] << "x +";
+				}
+				else
+				{
+					std::cout << C[i][j] << "y +";
+				}
+
+			}
+			else
+			{
+				std::cout << C[i][j] << "z =";
+
+			}
+		}
+		cin >> a[i];
+	}
+
+	int g, n, m = 0;
+	g =      C[1][1] *      C[2][2] -      C[1][2] *      C[2][1];
+	g =      C[0][0] * g;
+
+	n =      C[1][0] *      C[2][2] -      C[1][2] *      C[2][0];
+	n =      C[0][1] * n;
+
+	m =      C[1][0] *      C[2][1] -      C[1][1] *      C[2][0];
+	m =      C[0][2] * m;
+
+	int k = 0;
+	k = g - n + m;
+
+	Cramer C2, C3, C4;
+
+	for (int i = 0; i<row; i++)
+	{
+		for (int j = 0; j<column; j++)
+		{
+			C2.C[i][j] =      C[i][j];
+			C3.C[i][j] =      C[i][j];
+			C4.C[i][j] =      C[i][j];
+
+		}
+	}
+
+	for (int i = 0; i<row; i++)
+	{
+		C2.C[i][0] = a[i];
+		C3.C[i][1] = a[i];
+		C4.C[i][2] = a[i];
+	}
+
+
+	int f, b, c = 0;
+	f = C2.C[1][1] * C2.C[2][2] - C2.C[1][2] * C2.C[2][1];
+	f = C2.C[0][0] * f;
+
+	b = C2.C[1][0] * C2.C[2][2] - C2.C[1][2] * C2.C[2][0];
+	b = C2.C[0][1] * b;
+
+	c = C2.C[1][0] * C2.C[2][1] - C2.C[1][1] * C2.C[2][0];
+	c = C2.C[0][2] * c;
+
+	int l, x = 0;
+	l = f - b + c;
+	x = l / k;
+
+
+
+
+
+
+	int q, w, e = 0;
+	q = C3.C[1][1] * C3.C[2][2] - C3.C[1][2] * C3.C[2][1];
+	q = C3.C[0][0] * q;
+
+	w = C3.C[1][0] * C3.C[2][2] - C3.C[1][2] * C3.C[2][0];
+	w = C3.C[0][1] * w;
+
+	e = C3.C[1][0] * C3.C[2][1] - C3.C[1][1] * C3.C[2][0];
+	e = C3.C[0][2] * e;
+
+	int y, d = 0;
+	d = q - w + e;
+	y = d / k;
+
+
+
+
+
+	int t, j, u = 0;
+	t = C4.C[1][1] * C4.C[2][2] - C4.C[1][2] * C4.C[2][1];
+	t = C4.C[0][0] * t;
+
+	j = C4.C[1][0] * C4.C[2][2] - C4.C[1][2] * C4.C[2][0];
+	j = C4.C[0][1] * j;
+
+	u = C4.C[1][0] * C4.C[2][1] - C4.C[1][1] * C4.C[2][0];
+	u = C4.C[0][2] * u;
+
+	int z, v = 0;
+	v = t - j + u;
+	z = v / k;
+
+
+
+	std::cout << "x = " << x << endl;
+	std::cout << "y = " << y << endl;
+	std::cout << "z = " << z << endl;
+
+}
+void Cramer::transpose()
+{
+	for (int i = 0; i<row; i++)
+	{
+		for (int j = 0; j<column; j++)
+		{
+			std::cout <<C[j][i] << " ";
+		}
+		std::cout << endl;
+	}
+}
+void Cramer::swap()
+{
+	Cramer C2;
+	for (int i = 0; i<row; i++)
+	{
+		for (int j = 0; j<column; j++)
+		{
+			C2.C[i][j] = C[i][j];
+
+
+		}
+	}
+	std::cout << "Swap:" << endl;
+	int a, b, c, d, e;
+	std::cout << "Enter the index of first value" << endl;
+	std::cin >> a;
+	std::cin >> b;
+	std::cout << "Enter the index of second value" << endl;
+	std::cin >> c;
+	std::cin >> d;
+	e = C2.C[a][b];
+	C2.C[a][b] = C2.C[c][d];
+	C2.C[c][d] = e;
+	for (int i = 0; i<row; i++)
+	{
+		for (int j = 0; j<column; j++)
+		{
+			std::cout << C2.C[i][j] << " ";
+		}
+		std::cout << endl;
+	}
+	std::cout << "Swap successful." << endl << endl;
+}
+void Cramer::display()
+{
+	for (int i = 0; i<row; i++)
+	{
+		for (int j = 0; j<column; j++)
+		{
+			std::cout <<C[i][j] << " ";
+		}
+		std::cout << endl;
+	}
+}
+Cramer Cramer::adjoint()
+{
+
+	Cramer check, temp;
+
+	check.init(3, 3);
+	temp.init(3, 3);
+
+
+
+	check.C[0][0] = C[1][1] * C[2][2] - C[2][1] * C[1][2];
+	check.C[0][1] = -1 * (C[1][0] * C[2][2] - C[2][0] * C[1][2]);
+	check.C[0][2] = C[1][0] * C[2][1] - C[2][0] * C[1][1];
+
+	check.C[1][0] = -1 * (C[0][1] * C[2][2] - C[2][1] * C[0][2]);
+	check.C[1][1] = C[0][0] * C[2][2] - C[2][0] * C[0][2];
+	check.C[1][2] = -1 * (C[0][0] * C[2][1] - C[2][0] * C[0][1]);
+
+	check.C[2][0] = C[0][1] * C[1][2] - C[1][1] * C[0][2];
+	check.C[2][1] = -1 * (C[0][0] * C[1][2] - C[1][0] * C[0][2]);
+	check.C[2][2] = C[0][0] * C[1][1] - C[1][0] * C[0][1];
+
+	//check.display();
+	//std::cout << endl << endl;
+	for (int i = 0; i<row; i++)
+	{
+		for (int j = 0; j<column; j++)
+		{
+			temp.C[i][j] = check.C[j][i];
+		}
+	}
+	//temp.display();
+
+	return temp;
+}
+int main()
+{
+	Cramer C1;
+
+	C1.input();
+	int f;
+	do
+	{
+		std::cout << "enter 1 to multiply whole matrix " << endl
+			<< "enter 2 to multiply single value " << endl
+			<< "enter 3 to add into whole matrix " << endl
+			<< "enter 4 to add single value  " << endl
+			<< "enter 5 to determinant  " << endl
+			<< "enter 6 to transpose  " << endl
+			<< "enter 7 to Cramer rule   " << endl
+			<< "enter 8 for swap   " << endl
+			<< "enter 9 to minus from whole matrix " << endl
+			<< "enter 10 to minus single value  " << endl
+			<< "enter 11 for A inverse  " << endl
+			<< "enter 12 for Adjoinnt  " << endl
+			<< "enter -1 to exit " << endl;
+
+		std::cin >> f;
+
+
+		if (f == 1)
+		{
+			int a;
+			std::cout << "enter no. to multiply with : ";
+			std::cin >> a;
+			C1.Multiply(a);
+		}
+		else if (f == 2)
+		{
+			int x, y, z = 0;
+			std::cout << "enter first part of index : ";
+			std::cin >> x;
+			std::cout << "enter second part of index : ";
+			std::cin >> y;
+			std::cout << "enter no to multiply : ";
+			std::cin >> z;
+			C1.multiplyindex(x, y, z);
+		}
+		else if (f == 3)
+		{
+			int a;
+			std::cout << "enter no. to add with : ";
+			std::cin >> a;
+			C1.add(a);
+		}
+		else if (f == 4)
+		{
+			int x, y, z = 0;
+			std::cout << "enter first part of index : ";
+			std::cin >> x;
+			std::cout << "enter second part of index : ";
+			std::cin >> y;
+			std::cout << "enter no to add : ";
+			std::cin >> z;
+			C1.addindex(x, y, z);
+		}
+		else if (f == 5)
+		{
+			std::cout << "Determinant is = ";
+			C1.determinant();
+			std::cout << endl;
+		}
+		else if (f == 6)
+		{
+			std::cout << "Transpose is : " << endl;
+			C1.transpose();
+			std::cout << endl;
+		}
+		else if (f == 7)
+		{
+			std::cout << "cramer Rule " << endl;
+			C1.CramerRule();
+			std::cout << endl;
+		}
+		else if (f == 8)
+		{
+			C1.swap();
+		}
+		else if (f == 9)
+		{
+			int a;
+			std::cout << "enter no. to mius with : ";
+			std::cin >> a;
+			C1.minus(a);
+		}
+		else if (f == 10)
+		{
+			int x, y, z = 0;
+			std::cout << "enter first part of index : ";
+			std::cin >> x;
+			std::cout << "enter second part of index : ";
+			std::cin >> y;
+			std::cout << "enter no to minus : ";
+			std::cin >> z;
+			C1.minusindex(x, y, z);
+
+		}
+		else if (f == 11)
+		{
+			
+			C1.Ainverse();
+
+		}
+		else if (f == 12)
+		{
+			Cramer c2;
+			c2=C1.adjoint();
+			c2.display();
+
+		}
+	} while (f != -1);
+
+	C1.display();
+
+
+
+}
