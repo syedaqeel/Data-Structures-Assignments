@@ -1,0 +1,317 @@
+#include<iostream>
+#include<string>
+using namespace std;
+class Item
+{
+	private : int  Itemid;
+	          string ItemName;
+	          int  Price;
+    public   : Item();
+               void setItemid(int a);
+               void settemName(string b);
+               void setPrice(int c);
+               int  getitemid();
+               string getItemName();
+               int  getPrice();
+               void display();
+};
+Item::Item()
+{
+	  this->Itemid=0;
+	  this->ItemName="";
+	  this->Price=0;
+}
+void Item::setItemid(int a)
+{
+	this->Itemid=a;
+}
+void Item::settemName(string b)
+{
+	this->ItemName=b;
+}
+void Item::setPrice(int c)
+{
+	this->Price=c;
+}
+int Item::getitemid()
+{
+	return this->Itemid;
+}
+string Item::getItemName()
+{
+	return this->ItemName;
+}
+int Item::getPrice()
+{
+	return this->Price;
+}
+void Item::display()
+{
+	cout<<"ItemID is : "<<getitemid()<<endl;
+	cout<<"Item Name is : "<<getItemName()<<endl;
+	cout<<"Item Price is : "<<getPrice()<<endl;
+}
+
+class Order
+{
+	private : int  Orderid;
+	          int Total;
+	          Item i;
+    public   : Order();
+               void setOrderid(int a);
+               void settotal(Item i);
+               int  getOrderid();
+               int  gettotal();
+               void display();
+
+};
+Order::Order()
+{
+	  this->Orderid=0;
+	  this->Total=0;
+}
+
+void Order::setOrderid(int a)
+{
+	this->Orderid=a;
+}
+
+int Order::getOrderid()
+{
+	return this->Orderid;
+}
+
+void Order::settotal(Item i)
+{
+	this->Total=i.getPrice();
+}
+int Order::gettotal()
+{
+	return this->Total;
+}
+
+void Order::display()
+{
+	cout<<"Order ID is : "<<getOrderid()<<endl;
+	cout<<"Order Total is : "<<gettotal()<<endl;
+
+}
+
+class Customer
+{
+	private : int  Customerid;
+	          string CustomerName;
+	          int  Customerorder;
+	          Order o;
+
+
+    public   : Customer();
+               void setCustomerid(int a);
+               void setCustomerName(string b);
+               void setCustomerorder(Order o);
+               int  getCustomerid();
+               string getCustomerName();
+			   int  getCustomerorder();
+               void display();
+
+
+};
+
+Customer::Customer()
+{
+	  this->Customerid=0;
+	  this->CustomerName="";
+	  this->Customerorder=0;
+
+}
+
+void Customer::setCustomerid(int a)
+{
+	this->Customerid=a;
+}
+
+void Customer::setCustomerName(string b)
+{
+	this->CustomerName=b;
+}
+
+void Customer::setCustomerorder(Order o)
+{
+	this->Customerorder=o.getOrderid();
+}
+
+int Customer::getCustomerid()
+{
+	return this->Customerid;
+}
+
+string Customer::getCustomerName()
+{
+	return this->CustomerName;
+}
+
+int Customer::getCustomerorder()
+{
+	return this->Customerorder;
+}
+
+
+void Customer::display()
+{
+	cout<<"CustomerID is : "<<getCustomerid()<<endl;
+	cout<<"Customer Name is : "<<getCustomerName()<<endl;
+	cout<<"Customer Order ID is : "<<getCustomerorder()<<endl;
+
+}
+
+template<class MyNode>
+class Node
+{
+public:
+	Node()
+	{
+		data = 0;
+		next = NULL;
+	}
+	Node(MyNode d)
+	{
+		data = d;
+		next = NULL;
+	}
+	void setNext(Node<MyNode> *n)
+	{
+		next = n;
+	}
+	void setData(MyNode n)
+	{
+		data = n;
+	}
+	MyNode getData()
+	{
+		return data;
+	}
+	Node<MyNode> * getNext()
+	{
+		return next;
+	}
+	void display()
+	{
+		data.display();
+		/*cout << data << " ";*/
+	}
+private:
+	MyNode data;
+	Node *next;
+};
+
+ template<class MyQueue>
+class Queue{
+public:
+	Queue()
+	{
+		front = NULL;
+		rear = NULL;
+		size = 0;
+	}
+	bool isEmpty()
+	{
+		return (rear == NULL && front==NULL);
+	}
+
+	void enquee(MyQueue d)
+	{
+		Node<MyQueue>* n = new Node<MyQueue>(d);
+		if (isEmpty())
+		{
+			front = n;
+			rear = n;
+		}
+		else
+		{
+			rear->setNext(n);
+			rear = n;
+		}
+		size++;
+	}
+
+	void dequee()
+			{
+				if (!isEmpty())
+				{
+					Node<MyQueue> * temp = front;
+					front = front->getNext();
+					temp->setNext(NULL);
+
+					if (temp == rear)
+						rear->setNext(NULL);
+						delete temp;
+						temp = NULL;
+						size--;
+
+
+				}
+				else
+				{
+					cout << "Queue -- Already Empty !!!!" << endl;
+				}
+
+			}
+
+	void display()
+	{
+		Node<MyQueue> * temp = front;
+		while (temp != NULL)
+		{
+			temp->display();
+			temp = temp->getNext();
+		}
+	}
+private:
+	Node<MyQueue> * front;
+	Node <MyQueue>* rear;
+	int size;
+};
+
+
+
+
+int main()
+{
+
+	Item i;
+	i.setItemid(5555);
+	i.setPrice(1000);
+	i.settemName("xyz");
+	i.display();
+	cout<<endl<<endl;
+
+
+	Order o;
+	o.setOrderid(3333);
+	o.settotal(i);
+	o.display();
+	cout<<endl<<endl;
+
+    Customer c;
+	c.setCustomerid(1234);
+	c.setCustomerName("Aqeel");
+	c.setCustomerorder(o);
+	c.display();
+	cout<<endl<<endl;
+
+
+	Customer c1;
+	c1.setCustomerid(1235);
+	c1.setCustomerName("Ali");
+	c1.setCustomerorder(o);
+	c1.display();
+	cout<<endl<<endl;
+
+
+	Queue<Customer> a;
+	a.enquee(c);
+	a.enquee(c1);
+	a.display();
+	cout<<endl<<endl;
+	//system("pause");
+}
