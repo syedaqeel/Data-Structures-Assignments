@@ -1,0 +1,239 @@
+#include<iostream>
+using namespace std;
+class Arraylist
+{
+	private : int size;
+	          int *ptr;
+
+	public  : Arraylist();
+	          Arraylist(int s);
+	          void init(int size);
+	          void input();
+	          int search(int e);
+	          void  add(int e);
+              void  add(int i,int e);
+              void  remove(int i);
+	          void  Clear();
+	          int sum();
+	          double mean();
+	          int minimum();
+	          int maximum();
+	          void display();
+	          ~Arraylist()
+	          {
+	          	cout<<"Array has been cleared ";
+	          }
+
+};
+
+ Arraylist::Arraylist()
+               {
+               }
+
+ Arraylist::Arraylist(int s)
+                {
+                	size=s;
+		   	        ptr=new int[size];
+		   	        init(size);
+                }
+
+void Arraylist::init(int size)
+                {
+                	for (int i=0; i<size ;i++)
+		   	           {
+		   		          ptr[i]=0;
+		   	           }
+                }
+int Arraylist::search(int a)
+               {
+                	int i=0;
+                	while (i<size)
+                 	{
+		                if (ptr[i]==a)
+		            {
+		            break;
+		            }
+		             i++;
+	                }
+	                return i;
+               }
+int Arraylist::sum()
+              {
+            	int sum=0;
+            	for (int i=0;i<size;i++)
+	          {
+	           	sum=sum+ptr[i];
+             	}
+             	cout<<sum;
+             }
+double Arraylist::mean()
+               {
+	             int sum=this->sum();
+	              int result=sum/size;
+	              cout<<result;
+                	return result;
+               }
+int Arraylist::minimum()
+             {
+	          int i=0;
+	         int min=ptr[i];
+            	while (i<size)
+	         {
+	        	if (min>ptr[i])
+	      	{
+	    		min=ptr[i];
+	       	}
+	        	i++;
+	        }
+	         return min;
+            }
+
+void Arraylist::input()
+                {
+                	for (int i=0; i<size; i++)
+		   	          {
+		   	  	         cout<<"enter value at "<<i<<" ";
+		   	  	         cin>>ptr[i];
+		   	          }
+                }
+int Arraylist::maximum()
+               {
+                	int i=0;
+	                int min=ptr[i];
+	                 while (i<size)
+	           {
+	               	if (min<ptr[i])
+	          	{
+	         		min=ptr[i];
+	         	}
+	            	i++;
+	           }
+             	return min;
+              }
+
+void Arraylist::add(int j)
+                {
+                	this->size=this->size+1;
+                    ptr[this->size-1]=j;
+                }
+void Arraylist::add(int i,int e)
+                {
+                	this->ptr[i]=e;
+                }
+void Arraylist::remove(int i)
+                {
+                	this->ptr[i]=0;
+                }
+void Arraylist::display()
+                {
+                	for (int i=0; i<size ;i++)
+		   	       {
+		   	        cout<<"Data["<<i<<"] ="<<ptr[i]<<endl;
+                   }
+               }
+void clone()
+{
+	Arraylist*b= new Arraylist(5);
+	b->display();
+}
+
+int main()
+{   int i=0;
+	Arraylist*a= new Arraylist(5);
+	a->input();
+	a->display();
+	do
+    {
+	cout<<"Enter 1 to add Data at the end of the array "<<endl
+        <<"Enter 2 to search array for an element"<<endl
+        <<"Enter 3 to find out minimum no in array"<<endl
+        <<"Enter 4 to find out maximum no in  array"<<endl
+        <<"Enter 5 to find out sum of all the no. in array"<<endl
+        <<"Enter 6 to find mean of the array"<<endl
+        <<"Enter 7 to clone the array"<<endl
+        <<"Enter 8 to add Data at the any point in the array "<<endl
+        <<"Enter 9 to remove Data from any point in the array "<<endl
+        <<"Enter 10 to destroy array"<<endl
+        <<"Enter -1 to exit !!! "<<endl;
+     cin>>i;
+     if(i==1)
+     {
+         int k=0;
+         cout<<"Enter no to add ";
+         cin>>k;
+         a->add(k);
+         a->display();
+         cout<<endl;
+
+     }
+     else if(i==2)
+     {
+         int k,s=0;
+         cout<<"Enter no. to search for";
+         cin>>k;
+         s=a->search(k);
+         cout<<"No found at index "<<s<<endl;
+
+     }
+     else if(i==3)
+     {
+         int min=a->minimum();
+	     cout<<"Min is "<<min<<endl;
+     }
+     else if(i==4)
+     {
+         int max=a->maximum();
+         cout<<"Max is "<<max<<endl;
+     }
+     else if(i==5)
+     {
+         cout<<endl<<"sum is";
+	     a->sum();
+         cout<<endl;
+
+     }
+     else if(i==6)
+     {
+         cout<<endl<<"Mean is";
+         a->mean();
+	     cout<<endl;
+     }
+     else if(i==7)
+     {
+        a->display();
+        Arraylist*b= new Arraylist(5);
+    	b->display();
+     }
+     else if(i==8)
+     {
+        int i,j=0;
+        cout<<"Enter index no. : ";
+        cin>>i;
+        cout<<"Enter data ";
+        cin>>j;
+        a->add(i,j);
+        a->display();
+     }
+     else if(i==9)
+     {
+        int i=0;
+        cout<<"Enter index no. : ";
+        cin>>i;
+        a->remove(i);
+        a->display();
+     }
+      else if(i==10)
+     {
+        a->~Arraylist();
+
+     }
+
+    }
+
+    while(i!=-1);
+
+
+}
+
+
+
