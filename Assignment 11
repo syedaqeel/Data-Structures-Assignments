@@ -1,0 +1,220 @@
+#include<iostream>
+#include<conio.h>
+#include<string>
+using namespace std;
+ 
+class Node
+{
+	private:
+		string data1;
+        int data2;
+        Node *next1;
+        Node *next2;
+    public:
+        Node()
+        {
+        	data1="";
+            data2 = 0;
+            next1 = NULL;
+            next2=NULL;
+        }
+        Node(string d1, int d2)
+        {
+            data1 = d1;
+            data2=d2;
+            next1 = NULL;
+            next2=NULL;
+        }
+        void setData1(string d1)
+        {
+            data1 = d1;
+        }
+       
+        string getData1()
+        {
+            return data1;
+        }
+        void setNext1(Node* n1)
+        {
+            next1 = n1;
+        }
+        void setNext2(Node* n2)
+        {
+            next2 = n2;
+        }
+        Node *getNext1()
+        {
+            return next1;
+        }
+        void setData2(int d2)
+        {
+        	data2=d2;
+		}
+		int getData2()
+		{
+			return data2;
+		}
+		Node *getNext2()
+		{
+			return next2;
+		}
+        void display()
+        {
+            cout<<data1<<"  "<<" "<<data2<<endl;
+        }
+        
+
+};
+class LinkedList
+{
+	private:
+        int size;
+        Node *head1, *head2, *curr,*prev;
+ 
+        void insertFirstTimeByName(Node* n)
+        {
+ //           Node *n = new Node(name, id);
+            head1 = n;
+            size++;
+        }
+        void insertFirstTimeById(Node *n)
+        {
+            //Node *n = new Node(name, id);
+            head2 = n;
+            size++;
+        }
+        void insertAtStartByName(Node *n)
+        {
+            //Node *n = new Node(name,id);
+            n->setNext1(head1);
+            head1 = n;
+            size++;
+        }
+        void insertAtStartById(Node *n)
+        {
+            //Node *n = new Node(name,id);
+            n->setNext2(head2);
+            head2 = n;
+            size++;
+        }
+        void insertAtMidOrEndByName(Node *n)
+        {
+            //Node *n = new Node(name, id);
+            n->setNext1(curr);
+            prev->setNext1(n);
+            size++;
+        }
+        void insertAtMidOrEndById(Node *n)
+        {
+            n->setNext2(curr);
+            prev->setNext2(n);
+            size++;
+        }
+    public:
+            LinkedList()
+            {
+                head1 = head2 = prev = curr = NULL;
+                size = 0;
+            }
+            void insert(string name,int id)
+            {
+            	Node * n = new Node(name,id);
+            	insertByName(n);
+            	insertById(n);
+			}
+            void insertByName(Node *n)
+            {
+                cout<<"Inserting data by name = "<<n->getData1()<<endl;
+                 if(head1 == NULL)
+                 {
+                     insertFirstTimeByName(n);
+                     cout<<"Inserting for the First Time by Name"<<endl;
+                 }
+                 else
+                 {
+                     prev = NULL;
+                     curr = head1;
+                     while(curr != NULL && curr->getData1() < n->getData1())
+                     {
+                         prev = curr ;
+                         curr = curr->getNext1();
+                     }
+                     //cout<<"Successfully Out from Loop with curr = "<<curr<<" , prev = "<<prev<<endl;
+                     if(prev == NULL)
+                     {
+                        insertAtStartByName(n);
+                        cout<<"Inserting At Start  by Name"<<endl;
+                     }
+                     else if(prev != NULL)
+                     {
+                        insertAtMidOrEndByName(n);
+                        cout<<"Inserting At Mid or End  by Name"<<endl;
+                     }
+                 }
+            }
+            void insertById(Node *n)
+            {
+                cout<<"Inserting data by ID = "<<n->getData2()<<endl;
+                 if(head2 == NULL)
+                 {
+                     insertFirstTimeById(n);
+                     cout<<"Inserting for the First Time by Id "<<endl;
+                 }
+                 else
+                 {
+                     prev = NULL;
+                     curr = head2;
+                     while(curr != NULL && curr->getData2() < n->getData2())
+                     {
+                         prev = curr ;
+                         curr = curr->getNext2();
+                     }
+                     //cout<<"Successfully Out from Loop with curr = "<<curr<<" , prev = "<<prev<<endl;
+                     if(prev == NULL)
+                     {
+                        insertAtStartById(n);
+                        cout<<"Inserting At Start by Id "<<endl;
+                     }
+                     else if(prev != NULL)
+                     {
+                        insertAtMidOrEndById(n);
+                        cout<<"Inserting At Mid or End by Id "<<endl;
+                     }
+                 }
+            }
+            void displayByName()
+            {
+            	cout<<"Displaying by Name"<<endl;
+                Node * temp = head1;
+                while(temp != NULL)
+                {
+                    temp->display();
+                    temp = temp->getNext1();
+                }
+            }
+            void displayById()
+            {
+            	cout<<"Displaying by ID"<<endl;
+                Node * temp = head2;
+                while(temp != NULL)
+                {
+                    temp->display();
+                    temp = temp->getNext2();
+                }
+            }
+ 
+
+};
+int main()
+{
+    LinkedList l;
+    l.insert("Haad",1023);
+    l.insert("Saad",2304);
+    l.insert("Baidar",2345);
+    l.insert("Aqeel",3094);
+    l.displayByName();
+    cout<<endl<<endl;
+	l.displayById();
+
+    return 0;
+}
