@@ -1,0 +1,312 @@
+// Day5(poly(linkedlist)).cpp : Defines the entry point for the console application.
+//
+
+//#include "stdafx.h"
+#include<iostream>
+using namespace std;
+
+
+class Node
+{
+public:
+	Node()
+	{
+		data = 0;
+		expo = 0;
+		next = NULL;
+	}
+	Node(int d, int e)
+	{
+		data = d;
+		expo = e;
+		next = NULL;
+	}
+	void setData(int d,int e)
+	{
+		data = d;
+		expo = e;
+	}
+	int getData()
+	{
+		return data;
+	}
+	int getexpo()
+	{
+		return expo;
+	}
+	void setNext(Node* n)
+	{
+		next = n;
+	}
+	Node* getNext()
+	{
+		return next;
+	}
+	void display()
+	{
+		std::cout << data <<"x^"<< expo<<"  ";
+	}
+private:
+	int data;
+	int expo;
+	Node * next;
+};
+class List
+{
+public:
+	List()
+	{
+		head = prev = curr = NULL;
+		size = 0;
+	}
+	List add(List l)
+	{
+	    List result;
+	    Node *temp=head;
+        Node *temp1=l.head;
+	   /* if(this->getSize()==l.getSize())
+        {
+            Node *temp=head;
+            Node *temp1=l.head;
+            if(temp->getexpo()==temp1->getexpo())
+            {
+                while(temp!=NULL&&temp1!=NULL)
+                {
+                   result.insert(temp->getData()+temp1->getData(),temp->getexpo());
+                   temp=temp->getNext();
+                temp1=temp1->getNext();
+                    // result.insert(temp->getData()+temp1->getData(),temp->getexpo());
+                }
+            }
+        }
+           do
+        {
+              if(temp!=NULL&&temp1!=NULL)
+              {
+                   result.insert(temp->getData()+temp1->getData(),temp->getexpo());
+                   temp=temp->getNext();
+                    temp1=temp1->getNext();
+              }
+
+        }    while(temp->getexpo()==temp1->getexpo());
+*/
+while(temp!=NULL&&temp1!=NULL)
+{
+
+
+    if(temp!=NULL&&temp1!=NULL&&temp->getexpo()==temp1->getexpo())
+{
+    result.insert(temp->getData()+temp1->getData(),temp->getexpo());
+    temp=temp->getNext();
+    temp1=temp1->getNext();
+}
+if(temp!=NULL&&temp->getexpo()>temp1->getexpo())
+{
+    result.insert(temp->getData(),temp->getexpo());
+    temp=temp->getNext();
+}
+if(temp1!=NULL&&temp->getexpo()<temp1->getexpo())
+{
+    result.insert(temp1->getData(),temp1->getexpo());
+    temp1=temp1->getNext();
+}
+}
+
+         return result;
+	}
+	List minus(List l)
+	{
+	     List result;
+	    Node *temp=head;
+        Node *temp1=l.head;
+
+	    while(temp!=NULL&&temp1!=NULL)
+{
+
+
+    if(temp!=NULL&&temp1!=NULL&&temp->getexpo()==temp1->getexpo())
+{
+    result.insert(temp->getData()-temp1->getData(),temp->getexpo());
+    temp=temp->getNext();
+    temp1=temp1->getNext();
+}
+if(temp!=NULL&&temp->getexpo()>temp1->getexpo())
+{
+    result.insert(temp->getData(),temp->getexpo());
+    temp=temp->getNext();
+}
+if(temp1!=NULL&&temp->getexpo()<temp1->getexpo())
+{
+    result.insert(temp1->getData(),temp1->getexpo());
+    temp1=temp1->getNext();
+}
+}
+
+         return result;
+
+	}
+List multiply(List l)
+{
+// List *result=new result[];
+ List result;
+ Node *temp=head;
+ while(temp!=NULL)
+ {
+     Node *temp1=l.head;
+     while(temp1!=NULL)
+     {
+         result.insert(temp->getData()*temp1->getData(),temp->getexpo()+temp1->getexpo());
+         temp1=temp1->getNext();
+     }
+    temp=temp->getNext();
+
+ }
+
+return result;
+}
+
+	int getSize()
+	{
+		return size;
+	}
+	Node * getHead()
+	{
+		return head;
+	}
+	Node * getcurr()
+	{
+		return curr;
+	}
+	Node * getpre()
+	{
+		return prev;
+	}
+	bool isEmpty() {
+		return (head == NULL);
+	}
+	void insert(int d,int e)
+	{
+		if (isEmpty())
+		{
+			insertFirstTime(d,e);
+		}
+		else
+		{
+			prev = NULL;
+			curr = head;
+			while (curr != NULL)
+			{
+				if (curr->getexpo() > e) {
+					prev = curr;
+					curr = curr->getNext();
+				}
+				else
+					break;
+			}
+			if (prev == NULL)
+			{
+				insertAtFront(d,e);
+			}
+			else if (prev != NULL)
+			{
+				if (curr == NULL)
+				{
+					insertAtEnd(d,e);
+				}
+				else
+				{
+					insertAtMid(d,e);
+				}
+			}
+		}
+	}
+	void display()
+	{
+		Node * temp = head;
+		while (temp != NULL)
+		{
+			temp->display();
+			temp = temp->getNext();
+		}
+
+
+		std::cout << "Size :  " << size << endl;
+	}
+
+/*	int checksize(List a, List b)
+	{
+		int c = 0;
+		c = (a.getSize() > b.getSize()) ? a.getSize() : b.getSize();
+
+		return c;
+	}
+*/
+
+
+
+private:
+	Node *head;
+	Node * curr, *prev;
+	int size;
+
+	void insertFirstTime(int d,int e)
+	{
+		Node * n = new Node(d,e);
+		head = n;
+		size++;
+	}
+	void insertAtFront(int d,int e)
+	{
+		Node * n = new Node(d,e);
+		n->setNext(head);
+		head = n;
+		size++;
+	}
+	void insertAtEnd(int d,int e)
+	{
+		Node * n = new Node(d,e);
+		n->setNext(curr);
+		prev->setNext(n);
+		size++;
+	}
+	void insertAtMid(int d,int e)
+	{
+		Node * n = new Node(d,e);
+		//std::cout << "\nNew Node created with data " << d << endl;
+		n->setNext(curr);
+		prev->setNext(n);
+		size++;
+	}
+};
+int main()
+{
+	List list;
+	List l1;
+
+	list.insert(1, 1);
+    list.insert(3, 0);
+   // list.insert(2, 4);
+	//list.insert(3, 3);
+
+	l1.insert(2, 3);
+	l1.insert(-4, 2);
+	l1.insert(1, 1);
+	l1.insert(1, 0);
+
+	list.display();
+	l1.display();
+	List l3,l4,l5;
+
+	l3=list.add(l1);
+	l3.display();
+
+    l4=list.minus(l1);
+    l4.display();
+	std::cout << endl;
+
+	l5=list.multiply(l1);
+	l5.display();
+
+	return 0;
+}
+
