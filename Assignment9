@@ -1,0 +1,309 @@
+// Orthognallist.cpp : Defines the entry point for the console application.
+//
+
+//#include "stdafx.h"
+#include "iostream"
+using namespace std;
+
+class Node
+{
+public:
+	Node()
+	{
+		data = 0;
+		row = -1;
+		column = -1;
+		down = NULL;
+		right = NULL;
+	}
+	Node(int a, int b, int c)
+	{
+		data = a;
+		row = b;
+		column = c;
+		down = NULL;
+		right = NULL;
+	}
+
+	void setdown(Node *n)
+	{
+		down = n;
+	}
+	void setright(Node *n)
+	{
+		right = n;
+	}
+	void setData(int n)
+	{
+		data = n;
+	}
+	void setrow(int n)
+	{
+		row = n;
+
+	}
+	void setcolumn(int n)
+	{
+		column = n;
+	}
+	int getData()
+	{
+		return data;
+	}
+	int getrow()
+	{
+		return row;
+	}
+	int getcolumn()
+	{
+		return column;
+	}
+	Node *& getdown()
+	{
+		return down;
+	}
+	Node *& getright()
+	{
+		return right;
+	}
+	void display()
+	{
+		cout << "Row [" << row << "]" << "  " << "Column [" << column << "]" << "  " << "Data [" << data << "]" << "  " << endl;
+
+	}
+private:
+	int data;
+	int row;
+	int column;
+	Node *right;
+	Node *down;
+};
+class Orthognal
+{
+private: int row;
+		 int column;
+		 Node  *head, *prev, *curr;
+
+
+
+public:
+	Orthognal()
+	{
+		row = column = 0;
+		head = prev = curr = NULL;
+	}
+	Orthognal(int a, int b)
+	{
+		row = a;
+		column = b;
+		Node *n = new Node;
+		head = n;
+		n->setrow(a);
+		n->setcolumn(b);
+		Node *temp = head;
+		for (int i = 1; i <= a; i++)
+		{
+			Node *n = new Node;
+			n->setcolumn(0);
+			n->setrow(i);
+			temp->setdown(n);
+			temp = n;
+			//n->display();
+		}
+		cout << endl;
+		temp = head;
+		for (int i = 1; i <= b; i++)
+		{
+			Node *n = new Node;
+			n->setcolumn(i);
+			n->setrow(0);
+			temp->setright(n);
+			temp = n;
+			//n->display();
+
+
+		}
+		cout << endl;
+
+	}
+
+	void insertData(int a, int b, int c)
+	{
+
+		Node *temp = head;
+		temp = temp->getdown();
+		for (int i = 1; i <= row; i++)
+		{
+			if (i == b)
+			{
+				break;
+			}
+			temp = temp->getdown();
+		}
+
+		curr = temp;
+		prev = temp;
+		curr = curr->getright();
+		Node *n = new Node;
+		if (curr == NULL)
+		{
+
+			n->setData(a);
+			n->setrow(b);
+			n->setcolumn(c);
+			n->display();
+			prev->setright(n);
+
+		}
+		else
+		{
+			while (curr != NULL&&curr->getcolumn() < c)
+			{
+				prev = curr;
+				curr = curr->getright();
+			}
+
+			n->setData(a);
+			n->setrow(b);
+			n->setcolumn(c);
+			n->display();
+			prev->setright(n);
+			n->setright(curr);
+		}
+		temp = head;
+		temp = temp->getright();
+		for (int i = 1; i <= column; i++)
+		{
+			if (i == c)
+			{
+				break;
+			}
+			temp = temp->getright();
+		}
+		prev = temp;
+		curr = temp;
+
+		if (curr->getdown() == NULL)
+		{
+			curr->setdown(n);
+		}
+		else
+		{
+			curr = curr->getdown();
+			while (curr != NULL&&curr->getrow() < b)
+			{
+				prev = curr;
+				curr = curr->getdown();
+			}
+			prev->setdown(n);
+			n->setdown(curr);
+		}
+
+	}
+
+
+	void display()
+	{
+		Node *temp = head;
+		while (temp != NULL)
+		{
+			cout << temp->getrow() << temp->getcolumn() << " ";
+			temp = temp->getright();
+		}
+		temp = head;
+		temp = temp->getdown();
+
+		for (int i = 1; i <= row; i++)
+		{
+			cout << endl;
+			cout << temp->getrow() << temp->getcolumn() << " ";
+			Node *t1 = temp->getright();
+			if (t1 == NULL)
+			{
+				std::cout << " 0  0  0  0 ";
+			}
+			if (t1 != NULL)
+			{
+				if (t1->getcolumn() - temp->getcolumn() == 1)
+				{
+					std::cout << " ";
+				}
+				if (t1->getcolumn() - temp->getcolumn() == 2)
+				{
+					std::cout << " 0 ";
+				}
+				if (t1->getcolumn() - temp->getcolumn() == 3)
+				{
+					std::cout << " 0  0 ";
+				}
+				if (t1->getcolumn() - temp->getcolumn() == 4)
+				{
+					std::cout << " 0  0  0 ";
+				}
+			}
+			while (t1 != NULL)
+			{
+				cout << t1->getData();
+				if (t1->getright() != NULL)
+				{
+					if (t1->getright()->getcolumn() - t1->getcolumn() == 1)
+					{
+						std::cout << " ";
+					}
+					if (t1->getright()->getcolumn() - t1->getcolumn() == 2)
+					{
+						std::cout << " 0 ";
+					}
+					if (t1->getright()->getcolumn() - t1->getcolumn() == 3)
+					{
+						std::cout << " 0  0 ";
+					}
+					if (t1->getright()->getcolumn() - t1->getcolumn() == 4)
+					{
+						std::cout << " 0  0  0 ";
+					}
+				}
+				if (t1->getright() == NULL&&t1->getcolumn() == 0)
+				{
+					std::cout << "  0  0  0  0 ";
+				}
+				if (t1->getright() == NULL&&t1->getcolumn() == 1)
+				{
+					std::cout << "  0  0  0 ";
+				}
+				if (t1->getright() == NULL&&t1->getcolumn() == 2)
+				{
+					std::cout << "  0  0 ";
+				}
+				if (t1->getright() == NULL&&t1->getcolumn() == 3)
+				{
+					std::cout << "  0 ";
+				}
+				t1 = t1->getright();
+			}
+			temp = temp->getdown();
+		}
+
+	}
+
+
+
+};
+
+int main()
+{
+	Orthognal o1(4, 4);
+
+
+	o1.insertData(12, 1, 2);
+	o1.insertData(13, 1, 3);
+	o1.insertData(14,2,2);
+	o1.insertData(15, 3, 3);
+
+	o1.insertData(15, 4, 1);
+	cout << endl;
+	o1.display();
+
+	return 0;
+}
+
