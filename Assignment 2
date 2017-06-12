@@ -190,7 +190,6 @@ int main()
          cout<<endl<<"sum is";
 	     a->sum();
          cout<<endl;
-
      }
      else if(i==6)
      {
@@ -225,7 +224,6 @@ int main()
       else if(i==10)
      {
         a->~Arraylist();
-
      }
 
     }
